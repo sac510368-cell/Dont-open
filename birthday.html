@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday Mero 🎂</title>
+<style>
+:root{--bg1:#ffffff;--bg2:#ffd3e6;--card:rgba(255,255,255,.92);--tx:#8a2a5c;--ac:#ff4f9a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--tx);overflow:hidden;position:relative}
+#bg{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.f{position:absolute;bottom:-60px;animation:rise linear infinite;opacity:.85}
+@keyframes rise{to{transform:translateY(-120vh) rotate(25deg)}}
+.c{position:absolute;top:-20px;width:9px;height:14px;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(115vh) rotate(720deg)}}
+.screen{position:relative;z-index:2;height:100%;display:flex;align-items:center;justify-content:center;padding:84px 16px 16px;text-align:center}
+.card{background:var(--card);backdrop-filter:blur(8px);border-radius:24px;padding:28px 22px;width:100%;max-width:420px;box-shadow:0 10px 40px rgba(0,0,0,.18)}
+h1{margin:0 0 6px;font-size:28px}
+p{margin:6px 0 16px}
+input{width:100%;font-size:24px;text-align:center;letter-spacing:8px;padding:12px;border-radius:14px;border:2px solid var(--ac);background:transparent;color:var(--tx);outline:none}
+button.go{margin-top:14px;font-size:18px;padding:12px 28px;border:0;border-radius:14px;background:var(--ac);color:#fff;cursor:pointer}
+#err{color:#e0245e;min-height:22px;margin-top:8px}
+#top{position:fixed;top:0;left:0;right:0;z-index:5;text-align:center;padding:calc(14px + env(safe-area-inset-top,0px)) 12px 12px;font-size:26px;font-weight:800;color:#fff;background:linear-gradient(90deg,#ff4f9a,#ff8cc0);box-shadow:0 4px 18px rgba(255,79,154,.35)}
+.shake{animation:sh .4s}
+@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+#gifts{display:none}
+.row{display:flex;gap:10px;margin-top:16px}
+.gift{flex:1;display:block;text-decoration:none;color:var(--tx);background:var(--card);border:2px dashed var(--ac);border-radius:18px;padding:16px 4px;font-size:13px;font-weight:700;animation:bob 2s ease-in-out infinite}
+.gift:nth-child(2){animation-delay:.3s}.gift:nth-child(3){animation-delay:.6s}
+.gift span{display:block;font-size:42px}
+@keyframes bob{50%{transform:translateY(-8px)}}
+#msg{margin-top:14px;min-height:24px}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="top">🎉 Happy Birthday Mero 🎂</div>
+
+<div class="screen" id="lock">
+  <div class="card" id="lockcard">
+    <h1>🔒 Secret Password</h1>
+    <p>Enter the password to open your surprise</p>
+    <input id="pw" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="••••">
+    <div id="err"></div>
+    <button class="go" id="btn">Unlock 🔓</button>
+  </div>
+</div>
+
+<div class="screen" id="gifts">
+  <div class="card">
+    <h1>🎁 Choose your gift</h1>
+    <p>Tap one of the three</p>
+    <div class="row">
+      <a class="gift" data-n="1" href="#" target="_top"><span>🎁</span>Mystery gift #1</a>
+      <a class="gift" data-n="2" href="#" target="_top"><span>🎁</span>Mystery gift #2</a>
+      <a class="gift" data-n="3" href="#" target="_top"><span>🎁</span>Mystery gift #3</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== إعدادات =====
+var PASSWORD = "1110";
+var EMAIL = "sac510368@gmail.com";
+// ===================
+
+// خلفية متحركة
+var bg = document.getElementById('bg');
+var icons = ['🎈','🎂','🎁','🎉','🧁','🎊','🕯️','⭐'];
+for (var i = 0; i < 18; i++) {
+  var e = document.createElement('div');
+  e.className = 'f';
+  e.textContent = icons[i % icons.length];
+  e.style.left = (Math.random() * 95) + '%';
+  e.style.fontSize = (24 + Math.random() * 30) + 'px';
+  e.style.animationDuration = (8 + Math.random() * 10) + 's';
+  e.style.animationDelay = (-Math.random() * 14) + 's';
+  bg.appendChild(e);
+}
+var cols = ['#ff5fa2','#ffd23f','#4cc9f0','#7bd88f','#b388ff'];
+for (var j = 0; j < 30; j++) {
+  var c = document.createElement('div');
+  c.className = 'c';
+  c.style.left = (Math.random() * 100) + '%';
+  c.style.background = cols[j % cols.length];
+  c.style.animationDuration = (4 + Math.random() * 5) + 's';
+  c.style.animationDelay = (-Math.random() * 8) + 's';
+  bg.appendChild(c);
+}
+
+// الباسورد
+var pw = document.getElementById('pw'), err = document.getElementById('err');
+function check() {
+  if (pw.value === PASSWORD) {
+    document.getElementById('lock').style.display = 'none';
+    document.getElementById('gifts').style.display = 'flex';
+  } else {
+    err.textContent = 'Wrong password, try again 🙈';
+    var card = document.getElementById('lockcard');
+    card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+    pw.value = '';
+  }
+}
+document.getElementById('btn').addEventListener('click', check);
+pw.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') check(); });
+
+// الهدايا -> تفتح رسالة إيميل جاهزة
+document.querySelectorAll('.gift').forEach(function (a) {
+  a.addEventListener('click', function () {
+    var n = a.getAttribute('data-n');
+    var subject = encodeURIComponent('Mero picked gift #' + n + ' 🎁');
+    var body = encodeURIComponent('I opened gift #' + n + ' on the birthday website 🎂');
+    a.href = 'mailto:' + EMAIL + '?subject=' + subject + '&body=' + body;
+  });
+});
+</script>
+</body>
+</html>
